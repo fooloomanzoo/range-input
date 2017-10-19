@@ -1,0 +1,56 @@
+<script>
+  /**
+   * Mixin for selecting a value in a range
+   *
+   * @mixinFunction
+   * @polymer
+   */
+  const RangeMixin = (superClass) => { // eslint-disable-line no-unused-vars no-undef
+
+    return class extends superClass {
+
+      static get properties() {
+        return {
+          /**
+           * minimum value
+           */
+          min: {
+            type: Number,
+            notify: true
+          },
+
+          /**
+           * maximum value
+           */
+          max: {
+            type: Number,
+            notify: true,
+            value: 1
+          },
+
+          /**
+           * steps for value
+           */
+          step: {
+            type: Number
+          },
+
+          /**
+           * value
+           */
+          value: {
+            type: Number,
+            notify: true,
+            observer: '_valueChanged'
+          }
+        }
+      }
+
+      _valueChanged(value) {
+
+      }
+    }
+  }
+
+  window.RangeMixin = RangeMixin;
+</script>
