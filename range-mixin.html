@@ -16,14 +16,16 @@
            * @type {number}
            */
           min: {
-            type: Number
+            type: Number,
+            observer: '_updateValue'
           },
           /**
            * maximal input
            * @type {number}
            */
           max: {
-            type: Number
+            type: Number,
+            observer: '_updateValue'
           },
           /**
            * step for changing the input (referencing to `min` or `0`)
@@ -31,7 +33,8 @@
            */
           step: {
             type: Number,
-            value: 1
+            value: 1,
+            observer: '_updateValue'
           },
           /**
            * value of the input
@@ -43,11 +46,12 @@
             observer: '_valueChanged'
           },
           /**
-           * if true, the value does not overflow the maximum or underflow the minimum
+           * if true, the value does not revolve the range according to the maximum or the minimum
            * @type {boolean}
            */
           saturate: {
-            type: Boolean
+            type: Boolean,
+            observer: '_updateValue'
           }
         }
       }
@@ -55,7 +59,7 @@
       _valueChanged(value, oldValue) {
         if (value === undefined) return;
 
-        value = this._checkValue(value, oldValue, this.min, this.max);
+        value = this._checkValue(value, oldValue);
 
         if (value !== this.value) {
           this.value = value;
@@ -63,35 +67,45 @@
         }
       }
 
-      _checkValue(value, oldValue, min, max) {
+      _checkValue(value, oldValue) {
         if (isNaN(value)) {
           if (!isNaN(oldValue)) {
             return oldValue;
           }
-          return min || max || 0;
+          return this.min || this.max || 0;
         }
-        const saturate = this.saturate;
+        const saturate = this.saturate,
+          min = this.min,
+          max = this.max;
         if (min !== undefined && value <= min) {
           if (saturate || max === undefined || oldValue !== min) {
             return min;
           }
           return max;
-          // return this._checkStep(max, this.step, min, max);
+          // return this._checkStep(max, this.step);
         }
         if (max !== undefined && value >= max) {
-          // max = this._checkStep(max, this.step, min, max);
+          // max = this._checkStep(max, this.step);
           if (saturate || min === undefined || max !== oldValue) {
             return max;
           }
           return min;
         }
-        return this._checkStep(value, this.step, min, max);
+        return this._checkStep(value, this.step);
       }
 
-      _checkStep(value, step, min, max) {
+      _updateValue() {
+        if (this.value !== undefined) {
+          this._valueChanged(this.value, this.value);
+        }
+      }
+
+      _checkStep(value, step) {
         if (!step) {
           return value;
         }
+        const min = this.min,
+        max = this.max;
         if (min !== undefined) {
           return this._safeAdd(this._safeMult(Math.round((value - min) / step), step), min);
         }
