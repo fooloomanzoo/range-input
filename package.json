@@ -2,13 +2,36 @@
   "name": "range-input",
   "version": "0.5.1",
   "description": "alternative inputs for ranges",
-  "main": "range-input.html",
+  "main": "index.html",
+  "scripts": {
+    "postinstall": "bower install",
+    "prepublish": "npm run build && git add . && git commit -m \"publish new version\" && git push && npm version patch",
+    "build": "bower update && polymer analyze > analysis.json",
+    "prestart": "polymer analyze > analysis.json",
+    "start": "polymer serve",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "directories": {
     "test": "test"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "keywords": [
+    "webcomponents",
+    "polymer",
+    "range",
+    "input",
+    "polyfill"
+  ],
   "author": "fooloomanzoo",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fooloomanzoo/range-input.git"
+  },
+  "bugs": {
+    "url": "https://github.com/fooloomanzoo/range-input/issues"
+  },
+  "homepage": "https://github.com/fooloomanzoo/range-input"
 }
