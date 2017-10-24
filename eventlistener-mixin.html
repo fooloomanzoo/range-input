@@ -1,0 +1,58 @@
+<link rel="import" href="datetime-mixin.html">
+<link rel="import" href="datetime-shared-style.html">
+
+<script>
+  /**
+   * Mixin to extend for listening for key-events
+   *
+   * @mixinFunction
+   * @polymer
+   *
+   * @param {Object} superClass class to extend
+   * @return {Object} extended class
+   */
+  const KeyListenerMixin = (eventList, superClass) => { // eslint-disable-line no-unused-vars
+
+    return class extends superClass { // eslint-disable-line no-undef
+
+      connectedCallback() {
+        this._ensureAttribute('tabindex', 0);
+        super.connectedCallback();
+        this._addEventListener();
+      }
+
+      disconnectedCallback() {
+        super.disconnectedCallback();
+        this._removeEventListener();
+      }
+
+      _addEventListener() {
+        if (super._addEventListener) {
+          super._addEventListener();
+        }
+        this._addEventListener('keydown', this._checkKeycode.bind(this), false);
+      }
+
+      _removeEventListener() {
+        if (super._removeEventListener) {
+          super._removeEventListener();
+        }
+        this._removeEventListener('keydown', this._checkKeycode.bind(this), false);
+      }
+
+      /**
+       * key press event handler
+       * @param  {[type]} e Event
+       */
+      _handleEvent(e) {
+        if (!e) {
+          return;
+        }
+        console.log(e);
+        if (super._checkKeycode) {
+          super._checkKeycode(e);
+        }
+      }
+    }
+  }
+</script>
