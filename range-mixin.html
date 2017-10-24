@@ -66,6 +66,8 @@
             min: max,
             max: min
           })
+        } else if (min !== undefined && max !== undefined && this.value === undefined) {
+          this.value = this._checkStep(min + (max - min)/2, this.step);
         } else {
           this._updateValue();
         }
