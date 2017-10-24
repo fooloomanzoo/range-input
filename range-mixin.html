@@ -16,16 +16,14 @@
            * @type {number}
            */
           min: {
-            type: Number,
-            observer: '_updateValue'
+            type: Number
           },
           /**
            * maximal input
            * @type {number}
            */
           max: {
-            type: Number,
-            observer: '_updateValue'
+            type: Number
           },
           /**
            * step for changing the input (referencing to `min` or `0`)
@@ -53,6 +51,23 @@
             type: Boolean,
             observer: '_updateValue'
           }
+        }
+      }
+
+      static get observers() {
+        return [
+          '_minMaxChanged(min, max)'
+        ]
+      }
+
+      _minMaxChanged(min, max) {
+        if (max < min) {
+          this.setProperties({
+            min: max,
+            max: min
+          })
+        } else {
+          this._updateValue();
         }
       }
 
