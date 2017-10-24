@@ -139,7 +139,10 @@
         for (let i = 0; i < b.length; i++) {
           whole += Math.pow(10, b.length - 1 - i) * Number(a) * Number(b[i]);
         }
-        whole = this._format(whole, decimal, 0);
+        whole = '' + whole;
+        for (let i = whole.length; i < decimal; i++) {
+          whole = '0' + whole;
+        }
         return Number(endSign + whole.slice(0, whole.length - decimal) + '.' + whole.slice(whole.length - decimal));
       }
 
@@ -160,7 +163,10 @@
 
         let whole = Math.round( Math.pow(10, decimal) * Number(a) +
                                 Math.pow(10, decimal) * Number(b) );
-        whole = this._format(whole, decimal, 0);
+        whole = '' + whole;
+        for (let i = whole.length; i < decimal; i++) {
+          whole = '0' + whole;
+        }
         return Number(whole.slice(0, whole.length - decimal) + '.' + whole.slice(whole.length - decimal));
       }
 
